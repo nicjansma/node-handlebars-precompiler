@@ -1,3 +1,5 @@
+# Death to Redundant View Templates!
+
 I'll release this to NPM soon, but in the meantime you can just download the file and use it.
 I keep mine in ```my_app/lib```.
 
