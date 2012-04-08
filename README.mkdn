@@ -1,13 +1,12 @@
 # Death to Redundant View Templates!
 
-I'll release this to NPM soon, but in the meantime you can just download the file and use it.
-I keep mine in ```my_app/lib```.
+Get the package: ```npm install handlebars-precompiler```
 
-This is how to use it in your Express project:
+This is how you might use it in an Express project:
 
 ```javascript
 app.configure('development', function(){
-  hbsPrecompiler = require('./lib/handlebars-precompiler');
+  hbsPrecompiler = require('handlebars-precompiler');
   hbsPrecompiler.watchDir(
     __dirname + "/views",
     __dirname + "/public/javascripts/templates.js",
@@ -21,7 +20,7 @@ When changes are made, precompilation is run on all Handlebars templates and exp
 Javascript file.
 
 On the browser side, you will need to deploy the Handlebars runtime-only release.
-You could use the full release which includes a compiler, but you'd just be wasting resources.
+You could use the full release which includes a compiler, but your site will be faster if you don't.
 
-Templates will be named and stored in the ```Handlebars``` object according to their file paths,
+Client-side versions of the templates will be named and stored in the ```Handlebars``` object according to their file paths,
 e.g. ```Handlebars.templates['users/show']```
