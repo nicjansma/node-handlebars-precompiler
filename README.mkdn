@@ -1,6 +1,9 @@
+# Death to Redundant View Templates!
 
 I'll release this to NPM soon, but in the meantime you can just download the file and use it.
 I keep mine in ```my_app/lib```.
+
+This is how to use it in your Express project:
 
 ```javascript
 app.configure('development', function(){
@@ -8,7 +11,17 @@ app.configure('development', function(){
   hbsPrecompiler.watchDir(
     __dirname + "/views",
     __dirname + "/public/javascripts/templates.js",
-    ['handlbars', 'hbs']
+    ['handlebars', 'hbs']
   );
 });
 ```
+
+In this example, we watch for changes to ```*.handlebars``` and ```*.hbs``` files in our views directory.
+When changes are made, precompilation is run on all Handlebars templates and exported to a single minified
+Javascript file.
+
+On the browser side, you will need to deploy the Handlebars runtime-only release.
+You could use the full release which includes a compiler, but you'd just be wasting resources.
+
+Templates will be named and stored in the ```Handlebars``` object according to their file paths,
+e.g. ```Handlebars.templates['users/show']```
