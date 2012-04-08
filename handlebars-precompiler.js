@@ -105,3 +105,31 @@ exports.do = function(opts) {
     return output;
   }
 }
+
+exports.watchDir = function(dir, outfile) {
+  var fs = require('fs')
+    , file = require('file');
+
+  var viewDir = __dirname + '/test_views'
+    , outfile = 'test_output.js'
+
+  var compileOnChange = function(event, filename) {
+    console.log('[' + event + '] detected in ' + (filename ? filename : '[filename not supported]'));
+    console.log('[compiling] ' + outfile);
+    exports.do({
+      templates: [viewDir],
+      output: outfile,
+      min: true
+    });
+  }
+
+  file.walk(viewDir, function(_, dirPath, dirs, files) {
+    for(var i = 0; i < files.length; i++) {
+      var file = files[i];
+      if(/\.handlebars$/.test(file)) {
+        fs.watch(file, compileOnChange);
+        console.log('[watching] ' + file);
+      }
+    }
+  });
+}

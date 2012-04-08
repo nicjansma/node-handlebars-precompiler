@@ -1,5 +1,2 @@
-var compiler = require('./handlebars-precompiler');
-var output = compiler.do({
-  templates: [__dirname + '/test_views'],
-  output: 'test_output.js'
-});
+c = require('./handlebars-precompiler');
+c.watchDir(__dirname + '/test_views', 'test_output.js');
