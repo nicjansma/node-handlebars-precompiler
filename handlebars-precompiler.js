@@ -115,9 +115,6 @@ exports.watchDir = function(dir, outfile, extensions) {
   var fs = require('fs')
     , file = require('file');
 
-  var viewDir = __dirname + '/test_views'
-    , outfile = 'test_output.js'
-
   var regex = /\.handlebars$/;
   if(extensions) {
     regex = new RegExp('\.' + extensions.join('$|\.') + '$');
@@ -127,19 +124,21 @@ exports.watchDir = function(dir, outfile, extensions) {
     console.log('[' + event + '] detected in ' + (filename ? filename : '[filename not supported]'));
     console.log('[compiling] ' + outfile);
     exports.do({
-      templates: [viewDir],
+      templates: [dir],
       output: outfile,
       fileRegex: regex,
-      min: false
+      min: true
     });
   }
 
-  file.walk(viewDir, function(_, dirPath, dirs, files) {
-    for(var i = 0; i < files.length; i++) {
-      var file = files[i];
-      if(regex.test(file)) {
-        fs.watch(file, compileOnChange);
-        console.log('[watching] ' + file);
+  file.walk(dir, function(_, dirPath, dirs, files) {
+    if(files) {
+      for(var i = 0; i < files.length; i++) {
+        var file = files[i];
+        if(regex.test(file)) {
+          fs.watch(file, compileOnChange);
+          console.log('[watching] ' + file);
+        }
       }
     }
   });
