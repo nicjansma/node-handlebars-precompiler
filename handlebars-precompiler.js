@@ -50,11 +50,16 @@ exports.do = function(opts) {
   function processTemplate(template, root) {
     var path = template,
         stat = fs.statSync(path);
+
+    // make the filename regex user-overridable
+    var fileRegex = /\.handlebars$/;
+    if(opts.fileRegex) fileRegex = opts.fileRegex;
+    
     if (stat.isDirectory()) {
       fs.readdirSync(template).map(function(file) {
         var path = template + '/' + file;
 
-        if (/\.handlebars$/.test(path) || fs.statSync(path).isDirectory()) {
+        if (fileRegex.test(path) || fs.statSync(path).isDirectory()) {
           processTemplate(path, root || template);
         }
       });
@@ -72,7 +77,7 @@ exports.do = function(opts) {
       } else if (template.indexOf(root) === 0) {
         template = template.substring(root.length+1);
       }
-      template = template.replace(/\.handlebars$/, '');
+      template = template.replace(fileRegex, '');
 
       if (opts.simple) {
         output.push(handlebars.precompile(data, options) + '\n');
@@ -106,12 +111,17 @@ exports.do = function(opts) {
   }
 }
 
-exports.watchDir = function(dir, outfile) {
+exports.watchDir = function(dir, outfile, extensions) {
   var fs = require('fs')
     , file = require('file');
 
   var viewDir = __dirname + '/test_views'
     , outfile = 'test_output.js'
+
+  var regex = /\.handlebars$/;
+  if(extensions) {
+    regex = new RegExp('\.' + extensions.join('$|\.') + '$');
+  }
 
   var compileOnChange = function(event, filename) {
     console.log('[' + event + '] detected in ' + (filename ? filename : '[filename not supported]'));
@@ -119,14 +129,15 @@ exports.watchDir = function(dir, outfile) {
     exports.do({
       templates: [viewDir],
       output: outfile,
-      min: true
+      fileRegex: regex,
+      min: false
     });
   }
 
   file.walk(viewDir, function(_, dirPath, dirs, files) {
     for(var i = 0; i < files.length; i++) {
       var file = files[i];
-      if(/\.handlebars$/.test(file)) {
+      if(regex.test(file)) {
         fs.watch(file, compileOnChange);
         console.log('[watching] ' + file);
       }
