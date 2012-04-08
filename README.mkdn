@@ -1,0 +1,7 @@
+
+```javascript
+app.configure('development', function(){
+  hbsPrecompiler = require('./lib/handlebars-precompiler');
+  hbsPrecompiler.watchDir(__dirname + "/views", __dirname + "/public/javascripts/templates.js", ['handlbars', 'hbs']);
+});
+```
