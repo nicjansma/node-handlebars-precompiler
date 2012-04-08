@@ -1,7 +1,14 @@
 
+I'll release this to NPM soon, but in the meantime you can just download the file and use it.
+I keep mine in ```my_app/lib```.
+
 ```javascript
 app.configure('development', function(){
   hbsPrecompiler = require('./lib/handlebars-precompiler');
-  hbsPrecompiler.watchDir(__dirname + "/views", __dirname + "/public/javascripts/templates.js", ['handlbars', 'hbs']);
+  hbsPrecompiler.watchDir(
+    __dirname + "/views",
+    __dirname + "/public/javascripts/templates.js",
+    ['handlbars', 'hbs']
+  );
 });
 ```
