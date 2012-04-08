@@ -14,7 +14,9 @@
     "node": ">=0.4.7"
   },
   "dependencies": {
-    "handlebars": ">= 1.0.5beta"
+    "handlebars": "~1.0",
+    "uglify-js": "~1.2",
+    "file": "~0.2"
   },
   "devDependencies": {},
   "main": "handlebars-precompiler.js"
