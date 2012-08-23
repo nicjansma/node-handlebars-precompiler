@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/jwietelmann/node-handlebars-precompiler.png)](http://travis-ci.org/jwietelmann/node-handlebars-precompiler)
 # Death to Redundant View Templates!
 
 Get the package: ```npm install handlebars-precompiler```
