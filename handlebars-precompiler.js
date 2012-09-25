@@ -2,7 +2,7 @@
 // Changed from command-line compiler to node module
 
 var fs = require('fs'),
-    handlebars = exports.handlebars = require('handlebars'),
+    handlebars = require('handlebars'),
     basename = require('path').basename,
     uglify = require('uglify-js');
 
