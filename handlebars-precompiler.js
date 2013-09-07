@@ -121,8 +121,6 @@ exports.watchDir = function(dir, outfile, extensions) {
   }
 
   var compileOnChange = function(event, filename) {
-    console.log('[' + event + '] detected in ' + (filename ? filename : '[filename not supported]'));
-    console.log('[compiling] ' + outfile);
     exports.do({
       templates: [dir],
       output: outfile,
@@ -137,7 +135,6 @@ exports.watchDir = function(dir, outfile, extensions) {
         var file = files[i];
         if(regex.test(file)) {
           fs.watch(file, compileOnChange);
-          console.log('[watching] ' + file);
         }
       }
     }
