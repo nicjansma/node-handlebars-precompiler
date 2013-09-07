@@ -134,7 +134,7 @@ exports.watchDir = function(dir, outfile, extensions) {
       for(var i = 0; i < files.length; i++) {
         var file = files[i];
         if(regex.test(file)) {
-          fs.watch(file, compileOnChange);
+          fs.watchFile(file, { interval: 207, persistent: true }, compileOnChange);
         }
       }
     }
