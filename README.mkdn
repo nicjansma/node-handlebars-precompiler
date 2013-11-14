@@ -1,3 +1,7 @@
+# THIS PROJECT IS ABANDONED
+
+Please contact me if you'd like to take over. I just don't really use Handlebars anymore and am not interested in maintaining the package.
+
 # Death to Redundant View Templates!
 
 Get the package: ```npm install handlebars-precompiler```
