@@ -130,6 +130,14 @@ exports.watchDir = function(dir, outfile, extensions) {
       min: true
     });
   }
+  
+  // compile immediately
+  exports.do({
+    templates: [dir],
+    output: outfile,
+    fileRegex: regex,
+    min: true
+  });
 
   file.walk(dir, function(_, dirPath, dirs, files) {
     if(files) {
