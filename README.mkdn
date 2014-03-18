@@ -1,7 +1,3 @@
-# THIS PROJECT IS ABANDONED
-
-Please contact me if you'd like to take over. I just don't really use Handlebars anymore and am not interested in maintaining the package.
-
 # Death to Redundant View Templates!
 
 Get the package: ```npm install handlebars-precompiler```
@@ -23,8 +19,13 @@ In this example, we watch for changes to ```*.handlebars``` and ```*.hbs``` file
 When changes are made, precompilation is run on all Handlebars templates and exported to a single minified
 Javascript file.
 
-On the browser side, you will need to deploy the Handlebars runtime-only release.
+On the browser side, you will need to deploy the [Handlebars runtime-only release](http://handlebarsjs.com/).
 You could use the full release which includes a compiler, but your site will be faster if you don't.
 
 Client-side versions of the templates will be named and stored in the ```Handlebars``` object according to their file paths,
 e.g. ```Handlebars.templates['users/show']```
+
+# Contributors
+
+* Project created by Joel Wietelmann
+* Nic Jansma
