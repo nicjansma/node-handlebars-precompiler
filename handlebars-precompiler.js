@@ -194,6 +194,7 @@ exports.watch = function(dir, outfile, opts) {
   /**
    * Compiles all of the Handlebars templates if one of the files changes.
    *
+   * @private
    * @param {Event}  event    File change event
    * @param {string} filename File name that changed
    */
