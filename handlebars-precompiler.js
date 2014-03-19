@@ -59,7 +59,7 @@ exports.do = function(opts) {
       fs.readdirSync(template).map(function(file) {
         var path = template + '/' + file;
 
-        if (fileRegex.test(path) || fs.statSync(path).isDirectory()) {
+        if (path[path.length-1] !== '~' && (fileRegex.test(path) || fs.statSync(path).isDirectory())) {
           processTemplate(path, root || template);
         }
       });
@@ -121,8 +121,6 @@ exports.watchDir = function(dir, outfile, extensions) {
   }
 
   var compileOnChange = function(event, filename) {
-    console.log('[' + event + '] detected in ' + (filename ? filename : '[filename not supported]'));
-    console.log('[compiling] ' + outfile);
     exports.do({
       templates: [dir],
       output: outfile,
@@ -144,8 +142,7 @@ exports.watchDir = function(dir, outfile, extensions) {
       for(var i = 0; i < files.length; i++) {
         var file = files[i];
         if(regex.test(file)) {
-          fs.watch(file, compileOnChange);
-          console.log('[watching] ' + file);
+          fs.watchFile(file, { interval: 207, persistent: true }, compileOnChange);
         }
       }
     }
