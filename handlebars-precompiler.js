@@ -31,12 +31,6 @@ exports.do = function(opts) {
         throw 'Unable to open template file "' + template + '"';
       }
     });
-    if (opts.simple && opts.min) {
-      throw 'Unable to minimze simple output';
-    }
-    if (opts.simple && (opts._.length !== 1 || fs.statSync(opts._[0]).isDirectory())) {
-      throw 'Unable to output multiple templates in simple mode';
-    }
   }(opts));
 
   // Convert the known list into a hash
@@ -51,9 +45,8 @@ exports.do = function(opts) {
   }
 
   var output = [];
-  if (!opts.simple) {
-    output.push('(function() {\n  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};\n');
-  }
+  output.push('(function() {\n  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};\n');
+
   function processTemplate(template, root) {
     var path = template,
         stat = fs.statSync(path);
@@ -88,11 +81,7 @@ exports.do = function(opts) {
       }
       template = template.replace(fileRegex, '');
 
-      if (opts.simple) {
-        output.push(handlebars.precompile(data, options) + '\n');
-      } else {
-        output.push('templates[\'' + template + '\'] = template(' + handlebars.precompile(data, options) + ');\n');
-      }
+      output.push('templates[\'' + template + '\'] = template(' + handlebars.precompile(data, options) + ');\n');
     }
   }
 
@@ -101,9 +90,7 @@ exports.do = function(opts) {
   });
 
   // Output the content
-  if (!opts.simple) {
-    output.push('})();');
-  }
+  output.push('})();');
   output = output.join('');
 
   if (opts.min) {
