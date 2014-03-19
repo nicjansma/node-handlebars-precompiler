@@ -117,7 +117,7 @@ exports.watchDir = function(dir, outfile, extensions, silent) {
 
   var regex = /\.handlebars$/;
   if (extensions) {
-    regex = new RegExp('\.' + extensions.join('$|\.') + '$');
+    regex = new RegExp('\\.' + extensions.join('$|\\.') + '$');
   }
 
   var compileOnChange = function(event, filename) {
