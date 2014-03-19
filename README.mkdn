@@ -83,7 +83,7 @@ Compiles all of the Handlebars templates in the specified directory and monitors
 
 * `opts` Options (`object`)
 
-    * `extensions` An array of extensions of files (eg `['hbs']`) to compile as Handlebars templates (takes precedence over fileRegex) (`string[]`)
+    * `opts.extensions` An array of extensions of files (eg `['hbs']`) to compile as Handlebars templates (takes precedence over fileRegex) (`string[]`)
 
     * `opts.fileRegex` A regular expression of the files to compile as Handlebars templates (instead of using .extensions) (`RegExp`)
 
@@ -91,13 +91,13 @@ Compiles all of the Handlebars templates in the specified directory and monitors
 
     * `opts.silent` Silence console output (default: false) (`boolean`)
 
-    * `opts.amd` Exports amd style (require.js) (`boolean`)
+    * `opts.amd` Exports amd style (require.js) (default: false) (`boolean`)
 
-    * `opts.handlebarPath` Path to handlebar.js (only valid for amd-style) (`string`)
+    * `opts.handlebarPath` Path to handlebar.js (only valid for amd-style) (default: '') (`string`)
 
-    * `opts.partial` Compiling a partial template (`boolean`)
+    * `opts.partial` Compiling a partial template (default: false) (`boolean`)
 
-    * `opts.commonjs` Exports CommonJS style, path to Handlebars module (`string`)
+    * `opts.commonjs` Exports CommonJS style, path to Handlebars module (default: false) (`string`)
 
 ## Contributors
 

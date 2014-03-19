@@ -154,17 +154,17 @@ exports.watchDir = function(dir, outfile, extensions) {
 /**
  * Compiles all of the Handlebars templates in the specified directory and monitors for changes.
  *
- * @param {string}   dir             Directory with Handlebars templates
- * @param {string}   outfile         Output file name
- * @param {object}   opts            Options
- * @param {string[]} opts.extensions An array of extensions (eg 'hbs') of files to compile as Handlebars templates (takes precedence over fileRegex)
- * @param {RegExp}   opts.fileRegex  A regular expression of the files to compile as Handlebars templates (instead of using .extensions)
- * @param {boolean}  opts.min        Whether or not to minify the files (default: true)
- * @param {boolean}  opts.silent     Silence console output (default: false)
- * @param {boolean}  opts.amd           Exports amd style (require.js)
- * @param {string}   opts.handlebarPath Path to handlebar.js (only valid for amd-style)
- * @param {boolean}  opts.partial       Compiling a partial template
- * @param {string}   opts.commonjs      Exports CommonJS style, path to Handlebars module
+ * @param {string}   dir                Directory with Handlebars templates
+ * @param {string}   outfile            Output file name
+ * @param {object}   opts               Options
+ * @param {string[]} opts.extensions    An array of extensions (eg 'hbs') of files to compile as Handlebars templates (takes precedence over fileRegex)
+ * @param {RegExp}   opts.fileRegex     A regular expression of the files to compile as Handlebars templates (instead of using .extensions)
+ * @param {boolean}  opts.min           Whether or not to minify the files (default: true)
+ * @param {boolean}  opts.silent        Silence console output (default: false)
+ * @param {boolean}  opts.amd           Exports amd style (require.js) (default: false)
+ * @param {string}   opts.handlebarPath Path to handlebar.js (only valid for amd-style) (default: '')
+ * @param {boolean}  opts.partial       Compiling a partial template (default: false)
+ * @param {string}   opts.commonjs      Exports CommonJS style, path to Handlebars module (default: false)
  */
 exports.watch = function(dir, outfile, opts) {
   // defaults to send to .do()
