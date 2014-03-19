@@ -7,9 +7,7 @@ var fs = require('fs'),
     uglify = require('uglify-js');
 
 exports.do = function(opts) {
-
   (function(opts) {
-    var template = [0];
     if (!opts.templates.length) {
       throw 'Must define at least one template or directory.';
     }
@@ -29,8 +27,6 @@ exports.do = function(opts) {
       throw 'Unable to output multiple templates in simple mode';
     }
   }(opts));
-
-  var template = opts.templates[0];
 
   // Convert the known list into a hash
   var known = {};
@@ -53,8 +49,10 @@ exports.do = function(opts) {
 
     // make the filename regex user-overridable
     var fileRegex = /\.handlebars$/;
-    if(opts.fileRegex) fileRegex = opts.fileRegex;
-    
+    if (opts.fileRegex) {
+      fileRegex = opts.fileRegex;
+    }
+
     if (stat.isDirectory()) {
       fs.readdirSync(template).map(function(file) {
         var path = template + '/' + file;
@@ -109,14 +107,14 @@ exports.do = function(opts) {
   } else {
     return output;
   }
-}
+};
 
 exports.watchDir = function(dir, outfile, extensions) {
-  var fs = require('fs')
-    , file = require('file');
+  var fs = require('fs'),
+      file = require('file');
 
   var regex = /\.handlebars$/;
-  if(extensions) {
+  if (extensions) {
     regex = new RegExp('\.' + extensions.join('$|\.') + '$');
   }
 
@@ -129,8 +127,8 @@ exports.watchDir = function(dir, outfile, extensions) {
       fileRegex: regex,
       min: true
     });
-  }
-  
+  };
+
   // compile immediately
   exports.do({
     templates: [dir],
@@ -140,14 +138,14 @@ exports.watchDir = function(dir, outfile, extensions) {
   });
 
   file.walk(dir, function(_, dirPath, dirs, files) {
-    if(files) {
+    if (files) {
       for(var i = 0; i < files.length; i++) {
         var file = files[i];
-        if(regex.test(file)) {
+        if (regex.test(file)) {
           fs.watch(file, compileOnChange);
           console.log('[watching] ' + file);
         }
       }
     }
   });
-}
+};
