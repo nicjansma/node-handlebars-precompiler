@@ -14,6 +14,7 @@
     //
     var TEMP_OUTPUT_FILE = path.join(__dirname, 'output', 'output.js');
     var VIEWS_DIR = path.join(__dirname, 'views');
+    var DEFAULT_EXTENSIONS = ['handlebars', 'hbs'];
 
     //
     // Utility functions
@@ -32,7 +33,7 @@
     // Test group
     //
     var testcases = exports.precompiler = {};
-    
+
     /**
      * SetUp for group
      */
@@ -50,7 +51,7 @@
      */
     testcases['precompilation'] = function(test) {
         precompiler.watch(VIEWS_DIR, TEMP_OUTPUT_FILE, {
-            extensions: ['handlebars', 'hbs'],
+            extensions: DEFAULT_EXTENSIONS,
             silent: true
         });
 
@@ -69,6 +70,87 @@
         });
 
         validateOutput(test, 'onlyhbs');
+
+        test.done();
+    };
+
+    /**
+     * Ensures non-minification works
+     */
+    testcases['non minification'] = function(test) {
+        precompiler.watch(VIEWS_DIR, TEMP_OUTPUT_FILE, {
+            extensions: DEFAULT_EXTENSIONS,
+            silent: true,
+            min: false
+        });
+
+        validateOutput(test, 'nonmin');
+
+        test.done();
+    };
+
+    /**
+     * AMD generation
+     */
+    testcases['amd'] = function(test) {
+        precompiler.watch(VIEWS_DIR, TEMP_OUTPUT_FILE, {
+            extensions: DEFAULT_EXTENSIONS,
+            silent: true,
+            min: false,
+            amd: true
+        });
+
+        validateOutput(test, 'amd');
+
+        test.done();
+    };
+
+    /**
+     * AMD generation with handlebarPath
+     */
+    testcases['amd with handlebarPath'] = function(test) {
+        precompiler.watch(VIEWS_DIR, TEMP_OUTPUT_FILE, {
+            extensions: DEFAULT_EXTENSIONS,
+            silent: true,
+            min: false,
+            amd: true,
+            handlebarPath: 'handlebars/'
+        });
+
+        validateOutput(test, 'amdpath');
+
+        test.done();
+    };
+
+    /**
+     * AMD generation with partial set
+     */
+    testcases['amd with partial'] = function(test) {
+        precompiler.watch(VIEWS_DIR, TEMP_OUTPUT_FILE, {
+            extensions: DEFAULT_EXTENSIONS,
+            silent: true,
+            min: false,
+            amd: true,
+            partial: true
+        });
+
+        validateOutput(test, 'amdpartial');
+
+        test.done();
+    };
+
+    /**
+     * CommonJS generation
+     */
+    testcases['commonjs'] = function(test) {
+        precompiler.watch(VIEWS_DIR, TEMP_OUTPUT_FILE, {
+            extensions: DEFAULT_EXTENSIONS,
+            silent: true,
+            min: false,
+            commonjs: 'handlebars'
+        });
+
+        validateOutput(test, 'commonjs');
 
         test.done();
     };

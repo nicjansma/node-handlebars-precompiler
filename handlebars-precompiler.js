@@ -11,13 +11,21 @@ var fs = require('fs'),
 /**
  * Compiles all of the Handlebars templates
  *
- * @param {object}   opts           Options
- * @param {boolean}  opts.min       Whether or not to minify the files
- * @param {RegExp}   opts.fileRegex File regular expression to match
- * @param {string[]} opts.templates Template directories to compile
- * @param {string}   opts.output    Output file name
+ * @param {object}   opts               Options
+ * @param {boolean}  opts.min           Whether or not to minify the files
+ * @param {RegExp}   opts.fileRegex     File regular expression to match
+ * @param {string[]} opts.templates     Template directories to compile
+ * @param {string}   opts.output        Output file name
+ * @param {boolean}  opts.amd           Exports amd style (require.js)
+ * @param {string}   opts.handlebarPath Path to handlebar.js (only valid for amd-style)
+ * @param {boolean}  opts.partial       Compiling a partial template
+ * @param {string}   opts.commonjs      Exports CommonJS style, path to Handlebars module
  */
 exports.do = function(opts) {
+  if (!opts.handlebarPath) {
+    opts.handlebarPath = '';
+  }
+
   (function(opts) {
     if (!opts.templates.length) {
       throw 'Must define at least one template or directory.';
@@ -45,7 +53,14 @@ exports.do = function(opts) {
   }
 
   var output = [];
-  output.push('(function() {\n  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};\n');
+  if (opts.amd) {
+    output.push('define([\'' + opts.handlebarPath + 'handlebars\'], function(Handlebars) {\n');
+  } else if (opts.commonjs) {
+    output.push('var Handlebars = require("' + opts.commonjs + '");');
+  } else {
+    output.push('(function() {\n');
+  }
+  output.push('  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};\n');
 
   function processTemplate(template, root) {
     var path = template,
@@ -81,6 +96,9 @@ exports.do = function(opts) {
       }
       template = template.replace(fileRegex, '');
 
+      if(opts.amd && (opts.templates.length == 1 && !fs.statSync(opts.templates[0]).isDirectory())) {
+        output.push('return ');
+      }
       output.push('templates[\'' + template + '\'] = template(' + handlebars.precompile(data, options) + ');\n');
     }
   }
@@ -90,7 +108,18 @@ exports.do = function(opts) {
   });
 
   // Output the content
-  output.push('})();');
+  if (opts.amd) {
+    if(opts.templates.length > 1 || (opts.templates.length == 1 && fs.statSync(opts.templates[0]).isDirectory())) {
+      if(opts.partial){
+        output.push('return Handlebars.partials;\n');
+      } else {
+        output.push('return templates;\n');
+      }
+    }
+    output.push('});');
+  } else if (!opts.commonjs) {
+    output.push('})();');
+  }
   output = output.join('');
 
   if (opts.min) {
@@ -132,6 +161,10 @@ exports.watchDir = function(dir, outfile, extensions) {
  * @param {RegExp}   opts.fileRegex  A regular expression of the files to compile as Handlebars templates (instead of using .extensions)
  * @param {boolean}  opts.min        Whether or not to minify the files (default: true)
  * @param {boolean}  opts.silent     Silence console output (default: false)
+ * @param {boolean}  opts.amd           Exports amd style (require.js)
+ * @param {string}   opts.handlebarPath Path to handlebar.js (only valid for amd-style)
+ * @param {boolean}  opts.partial       Compiling a partial template
+ * @param {string}   opts.commonjs      Exports CommonJS style, path to Handlebars module
  */
 exports.watch = function(dir, outfile, opts) {
   // defaults to send to .do()
@@ -140,6 +173,10 @@ exports.watch = function(dir, outfile, opts) {
     fileRegex: /\.handlebars$/,
     min: true,
     silent: false,
+    amd: false,
+    handlebarPath: '',
+    partial: false,
+    commonjs: false
   };
 
   // merge arguments with defaults into options
