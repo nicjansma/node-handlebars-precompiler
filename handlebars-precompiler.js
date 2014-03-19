@@ -147,10 +147,11 @@ exports.watchDir = function(dir, outfile, extensions, silent) {
         var file = files[i];
         if (regex.test(file)) {
           fs.watch(file, compileOnChange);
-          if (!silent)
+          if (!silent) {
             console.log('[watching] ' + file);
+          }
         }
       }
     }
   });
-}
+};
