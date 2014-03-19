@@ -36,7 +36,7 @@
      * Ensures all views are pre-compiled before running
      */
     testcases.precompilation = function(test) {
-        precompiler.watchDir(VIEWS_DIR, TEMP_OUTPUT_FILE, ['handlebars', 'hbs']);
+        precompiler.watchDir(VIEWS_DIR, TEMP_OUTPUT_FILE, ['handlebars', 'hbs'], true);
         
         validateOutput(test, 'simple');
         
@@ -47,7 +47,7 @@
      * Ensures all views are pre-compiled before running
      */
     testcases.onlyHbs = function(test) {
-        precompiler.watchDir(VIEWS_DIR, TEMP_OUTPUT_FILE, ['hbs']);
+        precompiler.watchDir(VIEWS_DIR, TEMP_OUTPUT_FILE, ['hbs'], true);
         
         validateOutput(test, 'onlyhbs');
         
