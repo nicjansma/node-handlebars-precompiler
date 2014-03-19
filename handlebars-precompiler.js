@@ -2,10 +2,21 @@
 // Changed from command-line compiler to node module
 
 var fs = require('fs'),
+    file = require('file'),
     handlebars = exports.handlebars = require('handlebars'),
     basename = require('path').basename,
-    uglify = require('uglify-js');
+    uglify = require('uglify-js'),
+    _ = require('lodash');
 
+/**
+ * Compiles all of the Handlebars templates
+ *
+ * @param {object}   opts           Options
+ * @param {boolean}  opts.min       Whether or not to minify the files
+ * @param {RegExp}   opts.fileRegex File regular expression to match
+ * @param {string[]} opts.templates Template directories to compile
+ * @param {string}   opts.output    Output file name
+ */
 exports.do = function(opts) {
   (function(opts) {
     if (!opts.templates.length) {
@@ -109,45 +120,82 @@ exports.do = function(opts) {
   }
 };
 
-exports.watchDir = function(dir, outfile, extensions, silent) {
-  var fs = require('fs'),
-      file = require('file');
+/**
+ * Compiles all of the Handlebars templates in the specified directory and monitors for changes.
+ *
+ * @deprecated This function is deprecated in favor of watch(), which allows for more options.
+ *
+ * @param {string}   dir        Directory with Handlebars templates
+ * @param {string}   outfile    Output file name
+ * @param {string[]} extensions An array of extensions (eg 'hbs') of files to compile as Handlebars templates
+ */
+exports.watchDir = function(dir, outfile, extensions) {
+  exports.watch(dir, outfile, {
+    extensions: extensions
+  });
+};
 
-  silent = silent || false;
+/**
+ * Compiles all of the Handlebars templates in the specified directory and monitors for changes.
+ *
+ * @param {string}   dir             Directory with Handlebars templates
+ * @param {string}   outfile         Output file name
+ * @param {object}   opts            Options
+ * @param {string[]} opts.extensions An array of extensions (eg 'hbs') of files to compile as Handlebars templates (takes precedence over fileRegex)
+ * @param {RegExp}   opts.fileRegex  A regular expression of the files to compile as Handlebars templates (instead of using .extensions)
+ * @param {boolean}  opts.min        Whether or not to minify the files (default: true)
+ * @param {boolean}  opts.silent     Silence console output (default: false)
+ */
+exports.watch = function(dir, outfile, opts) {
+  // defaults to send to .do()
+  var defaults = {
+    extensions: null,
+    fileRegex: /\.handlebars$/,
+    min: true,
+    silent: false,
+  };
 
-  var regex = /\.handlebars$/;
-  if (extensions) {
-    regex = new RegExp('\\.' + extensions.join('$|\\.') + '$');
+  // merge arguments with defaults into options
+  var options = {};
+  _.merge(options, defaults, opts);
+
+  // process passed-in arguments
+  options.templates = [dir];
+  options.output    = outfile;
+
+  if (options.extensions) {
+    options.fileRegex = new RegExp('\\.' + options.extensions.join('$|\\.') + '$');
   }
 
-  var compileOnChange = function(event, filename) {
-    if (!silent){
+  /**
+   * Compiles all of the Handlebars templates if one of the files changes.
+   *
+   * @param {Event}  event    File change event
+   * @param {string} filename File name that changed
+   */
+  function compileOnChange(event, filename) {
+    if (!options.silent){
       console.log('[' + event + '] detected in ' + (filename ? filename : '[filename not supported]'));
       console.log('[compiling] ' + outfile);
     }
-    exports.do({
-      templates: [dir],
-      output: outfile,
-      fileRegex: regex,
-      min: true
-    });
-  };
 
-  // compile immediately
-  exports.do({
-    templates: [dir],
-    output: outfile,
-    fileRegex: regex,
-    min: true
-  });
+    // do a full compile
+    exports.do(options);
+  }
 
+  // compile everything before we start watching
+  exports.do(options);
+
+  // find all matching files in the base directory and watch all of them for changes
   file.walk(dir, function(_, dirPath, dirs, files) {
     if (files) {
-      for(var i = 0; i < files.length; i++) {
+      for (var i = 0; i < files.length; i++) {
         var file = files[i];
-        if (regex.test(file)) {
+        if (options.fileRegex.test(file)) {
+          // watch this file for changes
           fs.watch(file, compileOnChange);
-          if (!silent) {
+
+          if (!options.silent) {
             console.log('[watching] ' + file);
           }
         }

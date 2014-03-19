@@ -16,7 +16,8 @@
   "dependencies": {
     "handlebars": "~1.0",
     "uglify-js": "~1.2",
-    "file": "~0.2"
+    "file": "~0.2",
+    "lodash": ">= 0.0.0"
   },
   "devDependencies": {
     "grunt": ">= 0.0.0",
