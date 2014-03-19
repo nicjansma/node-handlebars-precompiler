@@ -18,6 +18,10 @@
     "uglify-js": "~1.2",
     "file": "~0.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt": ">= 0.0.0",
+    "grunt-contrib-nodeunit": ">= 0.0.0",
+    "grunt-contrib-jshint": ">= 0.0.0"
+  },
   "main": "handlebars-precompiler.js"
 }
