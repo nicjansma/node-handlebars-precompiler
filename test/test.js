@@ -12,7 +12,8 @@
     //
     // Constants
     //
-    var TEMP_OUTPUT_FILE = path.join(__dirname, 'output', 'output.js');
+    var TEMP_OUTPUT_DIR = path.join(__dirname, 'output');
+    var TEMP_OUTPUT_FILE = path.join(TEMP_OUTPUT_DIR, 'output.js');
     var VIEWS_DIR = path.join(__dirname, 'views');
     var DEFAULT_EXTENSIONS = ['handlebars', 'hbs'];
 
@@ -42,6 +43,10 @@
         if (fs.existsSync(TEMP_OUTPUT_FILE)) {
             fs.unlinkSync(TEMP_OUTPUT_FILE);
         }
+
+        if (!fs.existsSync(TEMP_OUTPUT_DIR)) {
+            fs.mkdirSync(TEMP_OUTPUT_DIR);
+        };
 
         callback();
     };
