@@ -96,7 +96,7 @@ exports.do = function(opts) {
       }
       template = template.replace(fileRegex, '');
 
-      if(opts.amd && (opts.templates.length == 1 && !fs.statSync(opts.templates[0]).isDirectory())) {
+      if(opts.amd && (opts.templates.length === 1 && !fs.statSync(opts.templates[0]).isDirectory())) {
         output.push('return ');
       }
       output.push('templates[\'' + template + '\'] = template(' + handlebars.precompile(data, options) + ');\n');
@@ -109,7 +109,7 @@ exports.do = function(opts) {
 
   // Output the content
   if (opts.amd) {
-    if(opts.templates.length > 1 || (opts.templates.length == 1 && fs.statSync(opts.templates[0]).isDirectory())) {
+    if(opts.templates.length > 1 || (opts.templates.length === 1 && fs.statSync(opts.templates[0]).isDirectory())) {
       if(opts.partial){
         output.push('return Handlebars.partials;\n');
       } else {
