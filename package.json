@@ -24,5 +24,8 @@
     "grunt-contrib-nodeunit": ">= 0.0.0",
     "grunt-contrib-jshint": ">= 0.0.0"
   },
+  "scripts": {
+    "test": "grunt travis --verbose"
+  },
   "main": "handlebars-precompiler.js"
 }
