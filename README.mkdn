@@ -104,3 +104,7 @@ Compiles all of the Handlebars templates in the specified directory and monitors
 * Project created by Joel Wietelmann
 * Nic Jansma
 * Matt Null
+
+## Version History
+
+* v1.0.4 - [Fixed issue with temp files crashing precompiler](https://github.com/nicjansma/node-handlebars-precompiler/pull/3)

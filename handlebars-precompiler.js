@@ -76,7 +76,7 @@ exports.do = function(opts) {
       fs.readdirSync(template).map(function(file) {
         var path = template + '/' + file;
 
-        if (fileRegex.test(path) || fs.statSync(path).isDirectory()) {
+        if (path.slice(-1) !== '~' && (fileRegex.test(path) || fs.statSync(path).isDirectory())) {
           processTemplate(path, root || template);
         }
       });
