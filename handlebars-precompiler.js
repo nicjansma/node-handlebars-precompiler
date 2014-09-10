@@ -158,6 +158,7 @@ exports.watchDir = function(dir, outfile, extensions) {
  * @param {string}   outfile            Output file name
  * @param {object}   opts               Options
  * @param {string[]} opts.extensions    An array of extensions (eg 'hbs') of files to compile as Handlebars templates (takes precedence over fileRegex)
+ * @param {number}   opts.pollInterval  Interval in milliseconds at which files are polled for changes (default: 500)
  * @param {RegExp}   opts.fileRegex     A regular expression of the files to compile as Handlebars templates (instead of using .extensions)
  * @param {boolean}  opts.min           Whether or not to minify the files (default: true)
  * @param {boolean}  opts.silent        Silence console output (default: false)
@@ -170,6 +171,7 @@ exports.watch = function(dir, outfile, opts) {
   // defaults to send to .do()
   var defaults = {
     extensions: null,
+    pollInterval: 500,
     fileRegex: /\.handlebars$/,
     min: true,
     silent: false,
@@ -218,7 +220,7 @@ exports.watch = function(dir, outfile, opts) {
         var file = files[i];
         if (options.fileRegex.test(file)) {
           // watch this file for changes
-          fs.watch(file, compileOnChange);
+          fs.watchFile(file, { interval: options.pollInterval, persistent: true }, compileOnChange);
 
           if (!options.silent) {
             console.log('[watching] ' + file);

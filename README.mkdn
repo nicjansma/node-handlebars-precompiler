@@ -85,6 +85,8 @@ Compiles all of the Handlebars templates in the specified directory and monitors
 
     * `opts.extensions` An array of extensions of files (eg `['hbs']`) to compile as Handlebars templates (takes precedence over fileRegex) (`string[]`)
 
+    * `opts.pollInterval` Interval in milliseconds at which files are polled for changes (default: 500) (`number`)
+ 
     * `opts.fileRegex` A regular expression of the files to compile as Handlebars templates (instead of using .extensions) (`RegExp`)
 
     * `opts.min` Whether or not to minify the files (default: true) (`boolean`)
@@ -104,6 +106,7 @@ Compiles all of the Handlebars templates in the specified directory and monitors
 * Project created by Joel Wietelmann
 * Nic Jansma
 * Matt Null
+* Brandon Paton
 
 ## Version History
 
