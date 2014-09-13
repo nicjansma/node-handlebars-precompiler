@@ -2,7 +2,7 @@
 // Changed from command-line compiler to node module
 
 var fs = require('fs'),
-    file = require('file'),
+    watch = require('watch'),
     handlebars = exports.handlebars = require('handlebars'),
     basename = require('path').basename,
     uglify = require('uglify-js'),
@@ -158,6 +158,7 @@ exports.watchDir = function(dir, outfile, extensions) {
  * @param {string}   outfile            Output file name
  * @param {object}   opts               Options
  * @param {string[]} opts.extensions    An array of extensions (eg 'hbs') of files to compile as Handlebars templates (takes precedence over fileRegex)
+ * @param {number}   opts.pollInterval  Interval in milliseconds at which files are polled for changes (default: 500)
  * @param {RegExp}   opts.fileRegex     A regular expression of the files to compile as Handlebars templates (instead of using .extensions)
  * @param {boolean}  opts.min           Whether or not to minify the files (default: true)
  * @param {boolean}  opts.silent        Silence console output (default: false)
@@ -170,6 +171,7 @@ exports.watch = function(dir, outfile, opts) {
   // defaults to send to .do()
   var defaults = {
     extensions: null,
+    pollInterval: 500,
     fileRegex: /\.handlebars$/,
     min: true,
     silent: false,
@@ -195,36 +197,51 @@ exports.watch = function(dir, outfile, opts) {
    * Compiles all of the Handlebars templates if one of the files changes.
    *
    * @private
-   * @param {Event}  event    File change event
-   * @param {string} filename File name that changed
+   * @param {string} File name that changed, or an object of files that are being watched
+   * @param {object} Current stat object
+   * @param {object} Previous stat object (null if file is new)
    */
-  function compileOnChange(event, filename) {
-    if (!options.silent){
-      console.log('[' + event + '] detected in ' + (filename ? filename : '[filename not supported]'));
-      console.log('[compiling] ' + outfile);
-    }
+  function compileOnChange(file, current, previous) {
+    var message;
+    
+    if (typeof file === 'object' && previous === null && current === null) {
+      // Finished walking the tree and added listeners
+      message = 'watching ' + Object.keys(file).length + ' files';
+    } else {
 
-    // do a full compile
-    exports.do(options);
+      var relativeFilename = file.replace(dir, '');
+
+      if (previous === null) {
+        message = 'new file detected: ' + relativeFilename;
+      } else if (current.nlink === 0) {
+        message = 'file removed: ' + relativeFilename;
+      } else {
+        message = 'file changed: ' + relativeFilename;
+      } 
+
+      exports.do(options);
+    }    
+    
+    if (!options.silent) {
+      console.log('[handlebars-precompiler] ' + message);
+    }
   }
 
   // compile everything before we start watching
   exports.do(options);
 
   // find all matching files in the base directory and watch all of them for changes
-  file.walk(dir, function(_, dirPath, dirs, files) {
-    if (files) {
-      for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        if (options.fileRegex.test(file)) {
-          // watch this file for changes
-          fs.watch(file, compileOnChange);
-
-          if (!options.silent) {
-            console.log('[watching] ' + file);
-          }
-        }
-      }
+  watch.watchTree(dir, {
+    interval: 100,
+    ignoreDotFiles: true,
+    persistent: true,
+    ignoreUnreadableDir: true,
+    filter: function(file) {
+      // This returns both files and directoroes
+      // Always allow directory to pass filter - apply regex to files only
+      var isDirectory = !/\/[^\/]*\.[^\/]+$/.test(file);
+      return isDirectory || options.fileRegex.test(file);
     }
-  });
+  }, compileOnChange);
+
 };
