@@ -232,7 +232,7 @@ exports.watch = function(dir, outfile, opts) {
 
   // find all matching files in the base directory and watch all of them for changes
   watch.watchTree(dir, {
-    interval: 100,
+    interval: options.pollInterval,
     ignoreDotFiles: true,
     persistent: true,
     ignoreUnreadableDir: true,
