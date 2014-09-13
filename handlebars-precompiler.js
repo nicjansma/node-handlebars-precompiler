@@ -217,10 +217,10 @@ exports.watch = function(dir, outfile, opts) {
         message = 'file removed: ' + relativeFilename;
       } else {
         message = 'file changed: ' + relativeFilename;
-      } 
+      }
 
       exports.do(options);
-    }    
+    }
     
     if (!options.silent) {
       console.log('[handlebars-precompiler] ' + message);
