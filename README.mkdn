@@ -110,4 +110,5 @@ Compiles all of the Handlebars templates in the specified directory and monitors
 
 ## Version History
 
+* v1.0.5 - [Use `watch` module to detect file and tree changes](https://github.com/nicjansma/node-handlebars-precompiler/pull/9)
 * v1.0.4 - [Fixed issue with temp files crashing precompiler](https://github.com/nicjansma/node-handlebars-precompiler/pull/3)
