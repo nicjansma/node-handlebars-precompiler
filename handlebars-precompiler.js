@@ -123,10 +123,7 @@ exports.do = function(opts) {
   output = output.join('');
 
   if (opts.min) {
-    var ast = uglify.parser.parse(output);
-    ast = uglify.uglify.ast_mangle(ast);
-    ast = uglify.uglify.ast_squeeze(ast);
-    output = uglify.uglify.gen_code(ast);
+    output = uglify.minify(output, { fromString: true }).code;
   }
 
   if (opts.output) {
