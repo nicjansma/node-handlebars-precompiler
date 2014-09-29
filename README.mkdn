@@ -110,6 +110,7 @@ Compiles all of the Handlebars templates in the specified directory and monitors
 
 ## Version History
 
+* v2.0.0 - Upgraded to Handlebars v2.0.0 *which is not compatible* with [v1.x](https://github.com/wycats/handlebars.js/blob/master/release-notes.md)
 * v1.0.6 - `pollInterval` was harcoded to 100
 * v1.0.5 - [Use `watch` module to detect file and tree changes](https://github.com/nicjansma/node-handlebars-precompiler/pull/9)
 * v1.0.4 - [Fixed issue with temp files crashing precompiler](https://github.com/nicjansma/node-handlebars-precompiler/pull/3)

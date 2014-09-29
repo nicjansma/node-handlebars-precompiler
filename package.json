@@ -1,7 +1,7 @@
 {
   "name": "handlebars-precompiler",
   "description": "Handlebars precompiler node module",
-  "version": "1.0.6",
+  "version": "2.0.0",
   "homepage": "http://github.com/nicjansma/node-handlebars-precompiler",
   "keywords": [
     "handlebars mustache template html compiler"
