@@ -117,8 +117,10 @@ exports.do = function(opts) {
       }
     }
     output.push('});');
-  } else if (!opts.commonjs) {
-    output.push('})();');
+  } else if (opts.commonjs) {
+    output.push('module.exports = templates;\n');
+  } else {
+    output.push('})();');  
   }
   output = output.join('');
 

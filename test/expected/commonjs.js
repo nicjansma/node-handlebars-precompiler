@@ -11,3 +11,4 @@ templates['user/listItem'] = template({"compiler":[6,">= 2.0.0-beta.1"],"main":f
     + escapeExpression(((helper = (helper = helpers.content || (depth0 != null ? depth0.content : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"content","hash":{},"data":data}) : helper)))
     + "</li>";
 },"useData":true});
+module.exports = templates;
