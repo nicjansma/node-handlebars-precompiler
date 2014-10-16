@@ -60,7 +60,11 @@ exports.do = function(opts) {
   } else {
     output.push('(function() {\n');
   }
-  output.push('  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};\n');
+  if (opts.partial) {
+    output.push('  var template = Handlebars.template, templates = Handlebars.partials = Handlebars.partials || {};\n');
+  } else {
+    output.push('  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};\n');
+  }
 
   function processTemplate(template, root) {
     var path = template,
