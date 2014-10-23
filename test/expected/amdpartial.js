@@ -1,5 +1,5 @@
 define(['handlebars'], function(Handlebars) {
-  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+  var template = Handlebars.template, templates = Handlebars.partials = Handlebars.partials || {};
 templates['comments/form'] = template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
   return "<form method=\"get\">"
