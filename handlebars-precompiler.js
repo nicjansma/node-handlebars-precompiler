@@ -124,7 +124,7 @@ exports.do = function(opts) {
   } else if (opts.commonjs) {
     output.push('module.exports = templates;\n');
   } else {
-    output.push('})();');  
+    output.push('})();');
   }
   output = output.join('');
 
@@ -206,7 +206,7 @@ exports.watch = function(dir, outfile, opts) {
    */
   function compileOnChange(file, current, previous) {
     var message;
-    
+
     if (typeof file === 'object' && previous === null && current === null) {
       // Finished walking the tree and added listeners
       message = 'watching ' + Object.keys(file).length + ' files';
@@ -224,7 +224,7 @@ exports.watch = function(dir, outfile, opts) {
 
       exports.do(options);
     }
-    
+
     if (!options.silent) {
       console.log('[handlebars-precompiler] ' + message);
     }
