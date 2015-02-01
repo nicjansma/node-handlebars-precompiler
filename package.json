@@ -1,7 +1,7 @@
 {
   "name": "handlebars-precompiler",
   "description": "Handlebars precompiler node module",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "homepage": "http://github.com/nicjansma/node-handlebars-precompiler",
   "keywords": [
     "handlebars mustache template html compiler"
@@ -16,7 +16,7 @@
   "dependencies": {
     "handlebars": "^2.0.0",
     "uglify-js": "^2.4.15",
-    "watch": "^0.11.0",
+    "watch": "^0.12.0",
     "lodash": ">=2.4.1"
   },
   "devDependencies": {
