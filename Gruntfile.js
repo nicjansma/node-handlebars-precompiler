@@ -5,28 +5,29 @@ module.exports = function(grunt) {
         jshint: {
             files: [ 'handlebars-precompiler.js' ],
             options: {
-                bitwise: true, 
-                curly: true, 
-                eqeqeq: true, 
-                forin: true, 
+                bitwise: true,
+                curly: true,
+                eqeqeq: true,
+                forin: true,
                 immed: true,
-                indent: 2, 
-                latedef: true, 
-                newcap: true, 
-                noempty: true, 
-                nonew: true, 
-                quotmark: true, 
+                indent: 2,
+                latedef: true,
+                newcap: true,
+                noempty: true,
+                nonew: true,
+                quotmark: true,
                 jquery: true,
-                undef: true, 
-                unused: true, 
-                trailing: true, 
-                browser: true, 
+                undef: true,
+                unused: true,
+                trailing: true,
+                browser: true,
                 node: true,
                 white: false,
                 globals: {
                     define: true,
                     window: true
-                }
+                },
+                reporterOutput: ""
             }
         },
         nodeunit: {
